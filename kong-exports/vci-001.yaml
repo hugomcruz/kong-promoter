@@ -40,7 +40,7 @@ routes:
   snis: null
   created_at: 1781795524
   paths:
-  - /demo
+  - /demo6
   hosts:
   - api.kong.bnov.net
   https_redirect_status_code: 426
