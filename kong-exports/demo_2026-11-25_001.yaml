@@ -1,0 +1,246 @@
+_format_version: '3.0'
+_info:
+  generated_at: '2026-11-25T14:57:15.472436+00:00'
+  selected_route_ids:
+  - 95f73b5f-d1b9-4719-b21c-20e9057cd34c
+  - 90fbb4ec-0f2e-4710-84b7-ebd0595eb6bd
+  - 8b6e6b51-fb75-42b6-a651-c5f2234522a5
+  - 899f7837-2819-48b1-acc9-548f9d07daa6
+  workspace: Czechia
+services:
+- write_timeout: 60000
+  tags:
+  - ax-docsis
+  connect_timeout: 60000
+  read_timeout: 60000
+  enabled: true
+  retries: 5
+  protocol: https
+  name: ax-docsis
+  port: 443
+  host: axdms.lab.oskarmobil.cz
+  tls_verify: true
+  path: /
+  routes:
+  - response_buffering: true
+    tags:
+    - ax-docsis
+    paths:
+    - /cz/vci/v1/docsis/reset_cm
+    - /cz/v1/docsis/reset_cm
+    methods:
+    - POST
+    path_handling: v0
+    hosts:
+    - api.tst.cz.oss-apigw.vodafone.com
+    preserve_host: false
+    name: ax-docsis-reset_cm
+    strip_path: true
+    protocols:
+    - https
+    regex_priority: 0
+    https_redirect_status_code: 426
+    request_buffering: true
+    plugins:
+    - enabled: true
+      tags:
+      - ax-docsis
+      instance_name: transform-reset_cm-route
+      name: request-transformer
+      config:
+        replace:
+          body: []
+          uri: /services/api/v1/CustomNBI/reset_cm
+          querystring: []
+          headers:
+          - 'Authorization: Basic b3NzYXBpZ3c6akI5MDZRTzc5eUdoTHhDeQ=='
+        rename:
+          body: []
+          headers: []
+          querystring: []
+        remove:
+          body: []
+          headers: []
+          querystring: []
+        append:
+          body: []
+          headers: []
+          querystring: []
+        http_method: null
+        add:
+          body: []
+          headers: []
+          querystring: []
+  - response_buffering: true
+    tags:
+    - ax-docsis
+    paths:
+    - /cz/vci/v1/docsis/health
+    - /cz/v1/docsis/health
+    methods:
+    - GET
+    path_handling: v0
+    hosts:
+    - api.tst.cz.oss-apigw.vodafone.com
+    preserve_host: false
+    name: ax-docsis-health
+    strip_path: true
+    protocols:
+    - https
+    regex_priority: 0
+    https_redirect_status_code: 426
+    request_buffering: true
+    plugins:
+    - enabled: true
+      tags:
+      - ax-docsis
+      instance_name: transform-health-route
+      name: request-transformer
+      config:
+        replace:
+          body: []
+          uri: /healthz
+          querystring: []
+          headers:
+          - 'Authorization: Basic b3NzYXBpZ3c6akI5MDZRTzc5eUdoTHhDeQ=='
+        rename:
+          body: []
+          headers: []
+          querystring: []
+        remove:
+          body: []
+          headers: []
+          querystring: []
+        append:
+          body: []
+          headers: []
+          querystring: []
+        http_method: null
+        add:
+          body: []
+          headers: []
+          querystring: []
+  plugins:
+  - enabled: false
+    instance_name: Request_Transformer-Ax-Docsis
+    name: request-transformer
+    config:
+      replace:
+        body: []
+        uri: null
+        querystring: []
+        headers:
+        - 'Authorization: Basic b3NzYXBpZ3c6akI5MDZRTzc5eUdoTHhDeQ=='
+      rename:
+        body: []
+        headers: []
+        querystring: []
+      remove:
+        body: []
+        headers: []
+        querystring: []
+      append:
+        body: []
+        headers: []
+        querystring: []
+      http_method: null
+      add:
+        body: []
+        headers: []
+        querystring: []
+- write_timeout: 60000
+  tags:
+  - GW<->GW
+  connect_timeout: 60000
+  read_timeout: 60000
+  enabled: true
+  retries: 5
+  protocol: https
+  name: interconnect-cz-vci
+  port: 443
+  host: api.tst.vci.oss-apigw.vodafone.com
+  path: /vci
+  routes:
+  - response_buffering: true
+    tags:
+    - AAA
+    - TIBCO
+    paths:
+    - /aaa-vf-tibco-partner-facade
+    path_handling: v0
+    preserve_host: false
+    name: aaa-tibco-vf-partner-connector
+    strip_path: false
+    protocols:
+    - https
+    regex_priority: 0
+    https_redirect_status_code: 426
+    request_buffering: true
+  - response_buffering: true
+    paths:
+    - /auth
+    methods:
+    - POST
+    path_handling: v0
+    hosts:
+    - api.tst.cz.oss-apigw.vodafone.com
+    preserve_host: false
+    name: keycloak-vci-users
+    strip_path: false
+    protocols:
+    - https
+    regex_priority: 0
+    https_redirect_status_code: 426
+    request_buffering: true
+upstreams: []
+consumers:
+- username_lower: oss-apigw-vci
+  username: oss-apigw-vci
+  type: 0
+  custom_id: oss-apigw-vci
+  keyauth_credentials:
+  - key: W7WO6psvJHG3Ixr8dyUFU8wco6DQidgv
+  groups:
+  - name: oss-apigw
+- username_lower: v2db
+  username: v2db
+  type: 0
+  custom_id: v2db
+  tags:
+  - AAA
+  basicauth_credentials:
+  - username: v2db
+    password: d0b5559885ff2b4b7dc08be997ec9cbab4b2974127d9a56c140f6ca7aad44c01
+  groups:
+  - name: grp-v2db
+- username_lower: hugo-big-data-client
+  username: hugo-big-data-client
+  type: 0
+  custom_id: hugo-big-data-client
+  keyauth_credentials:
+  - key: WZ0kawZDzgrDJLWEoCtRnPVIRkQTH1QOEKFLhVsbvrAX68ZEwl9bD0BvK815BV4MAgfmGaVTfx9LfYpCrqoYJIkvqVVs9aOCePaCig2T13dFybNtuH0jhAvFFZKMbriU
+- username_lower: petr
+  username: petr
+  type: 0
+  custom_id: petr
+  tags:
+  - AAA
+  basicauth_credentials:
+  - username: petr
+    password: 904dc8a4b9f7636a13f8819408dba41bc3d925a4b4e6f4d0487b9521f1472e3e
+  groups:
+  - name: aaa
+- username_lower: hcruz
+  username: hcruz
+  type: 0
+  custom_id: hcruz
+  basicauth_credentials:
+  - username: hcruz
+    password: 7c78d2e28c1e826ea49a8068f4f3cb341912f465e6f531ff5fa900a0cf20eec7
+consumer_groups:
+- name: oss-apigw
+- name: aaa
+- tags:
+  - AAA
+  name: grp-v2db
+_workspace: Czechia
