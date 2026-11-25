@@ -16,7 +16,7 @@ services:
   protocol: http
   name: aaa-rest-api
   port: 80
-  host: aaa-rest-api.prd-ms.svc.cluster.local
+  host: aaa-rest-api.tst-ms.svc.cluster.local
   id: 8c487d0b-da72-4dbb-b87a-1e7f8eed82f1
   path: /
   routes:
@@ -28,7 +28,7 @@ services:
     id: 4a8b5bb7-9c75-415a-8c6e-dab1da844327
     path_handling: v0
     hosts:
-    - api.cz.oss-apigw.vodafone.com
+    - api.tst.cz.oss-apigw.vodafone.com
     preserve_host: false
     name: aaa-rest-api-radius
     strip_path: true
