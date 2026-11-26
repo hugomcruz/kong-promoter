@@ -10,7 +10,7 @@ services:
   protocol: http
   name: aaa-rest-api
   port: 80
-  host: aaa-rest-api.tst-ms.svc.cluster.local
+  host: aaa-rest-api.prd-ms.svc.cluster.local
   path: /
   routes:
   - response_buffering: true
