@@ -1,0 +1,230 @@
+_format_version: '3.0'
+services:
+- write_timeout: 60000
+  tags:
+  - AAA
+  connect_timeout: 60000
+  read_timeout: 60000
+  enabled: true
+  retries: 5
+  protocol: http
+  name: aaa-big-data-api
+  port: 80
+  host: aaa-bigdata-api.prd-ms.svc.cluster.local
+  path: /
+  routes:
+  - response_buffering: true
+    tags:
+    - AAA
+    paths:
+    - /fbb/v1/pipe-usage
+    methods:
+    - GET
+    path_handling: v0
+    hosts:
+    - api.cz.oss-apigw.vodafone.com
+    preserve_host: false
+    name: aaa-big-data-api-pipe-usage
+    strip_path: true
+    protocols:
+    - https
+    regex_priority: 0
+    https_redirect_status_code: 426
+    request_buffering: true
+    plugins:
+    - enabled: true
+      instance_name: aaa-big-data-api-usage-pipe-replace-uri
+      partials: []
+      name: request-transformer
+      config:
+        replace:
+          body: []
+          uri: /usageManagement/v1/pipeUsage
+          querystring: []
+          headers: []
+        rename:
+          body: []
+          headers: []
+          querystring: []
+        remove:
+          body: []
+          headers: []
+          querystring: []
+        append:
+          body: []
+          headers: []
+          querystring: []
+        http_method: null
+        add:
+          body: []
+          headers: []
+          querystring: []
+      protocols:
+      - grpc
+      - grpcs
+      - http
+      - https
+    - enabled: true
+      instance_name: aaa-big-data-api-pipe-usage-key-auth
+      partials: []
+      name: key-auth
+      config:
+        realm: null
+        identity_realms:
+        - scope: cp
+          region: null
+        key_names:
+        - Api-Key
+        run_on_preflight: true
+        anonymous: null
+        key_in_body: false
+        hide_credentials: true
+        key_in_query: false
+        key_in_header: true
+        principals:
+          enabled: false
+          error_on_miss: true
+          directory: default
+      protocols:
+      - grpc
+      - grpcs
+      - http
+      - https
+      - ws
+      - wss
+  - response_buffering: true
+    tags:
+    - AAA
+    paths:
+    - /fbb/v1/usage
+    methods:
+    - GET
+    path_handling: v0
+    hosts:
+    - api.cz.oss-apigw.vodafone.com
+    preserve_host: false
+    name: aaa-big-data-api-usage
+    strip_path: true
+    protocols:
+    - https
+    regex_priority: 0
+    https_redirect_status_code: 426
+    request_buffering: true
+    plugins:
+    - enabled: true
+      instance_name: aaa-big-data-api-usage-key-auth
+      partials: []
+      name: key-auth
+      config:
+        realm: null
+        identity_realms:
+        - scope: cp
+          region: null
+        key_names:
+        - Api-Key
+        run_on_preflight: true
+        anonymous: null
+        key_in_body: false
+        hide_credentials: true
+        key_in_query: false
+        key_in_header: true
+        principals:
+          enabled: false
+          error_on_miss: true
+          directory: default
+      protocols:
+      - grpc
+      - grpcs
+      - http
+      - https
+      - ws
+      - wss
+    - enabled: true
+      instance_name: aaa-big-data-usage-replace-uri
+      partials: []
+      name: request-transformer
+      config:
+        replace:
+          body: []
+          uri: /usageManagement/v1/usage
+          querystring: []
+          headers: []
+        rename:
+          body: []
+          headers: []
+          querystring: []
+        remove:
+          body: []
+          headers: []
+          querystring: []
+        append:
+          body: []
+          headers: []
+          querystring: []
+        http_method: null
+        add:
+          body: []
+          headers: []
+          querystring: []
+      protocols:
+      - grpc
+      - grpcs
+      - http
+      - https
+  plugins:
+  - enabled: false
+    instance_name: aaa-bigdata-api-key-inject
+    partials: []
+    name: request-transformer
+    config:
+      replace:
+        body: []
+        uri: null
+        querystring: []
+        headers:
+        - 'Api-Key: WZ0kawZDzgrDJLWEoCtRnPVIRkQTH1QOEKFLhVsbvrAX68ZEwl9bD0BvK815BV4MAgfmGaVTfx9LfYpCrqoYJIkvqVVs9aOCePaCig2T13dFybNtuH0jhAvFFZKMbriU'
+      rename:
+        body: []
+        headers: []
+        querystring: []
+      remove:
+        body: []
+        headers: []
+        querystring: []
+      append:
+        body: []
+        headers: []
+        querystring: []
+      http_method: null
+      add:
+        body: []
+        headers:
+        - 'Api-Key: WZ0kawZDzgrDJLWEoCtRnPVIRkQTH1QOEKFLhVsbvrAX68ZEwl9bD0BvK815BV4MAgfmGaVTfx9LfYpCrqoYJIkvqVVs9aOCePaCig2T13dFybNtuH0jhAvFFZKMbriU'
+        querystring: []
+    protocols:
+    - grpc
+    - grpcs
+    - http
+    - https
+- write_timeout: 60000
+  tags:
+  - AAA
+  connect_timeout: 60000
+  read_timeout: 60000
+  enabled: true
+  retries: 5
+  protocol: http
+  name: aaa-v2-soap
+  port: 80
+  host: aaa-v2-soap-api.tst-ms.svc.cluster.local
+  path: /
+consumers:
+- username: oss-apigw-vci
+  custom_id: oss-apigw-vci
+  keyauth_credentials:
+  - key: W7WO6psvJHG3Ixr8dyUFU8wco6DQidgv
+  groups:
+  - name: oss-apigw
+consumer_groups:
+- name: oss-apigw
+_workspace: Czechia
